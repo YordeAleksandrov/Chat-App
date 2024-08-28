@@ -1,0 +1,24 @@
+
+html, body {
+  margin: 0;
+  height: 100%; /* Ensure the body and html elements take up the full height */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image: url('./images/vecteezy_Lavender-Lilac-Background-2_ir1020__generated-e1655987350100.webp');
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow: auto; /* Remove quotes around the overflow property */
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+.flex-container {
+  display: flex;
+  flex-direction: row; /* Align items horizontally */
+  height: 100vh; /* Full height of the viewport */
+}
