@@ -11,7 +11,7 @@ export function userReducer(state = initialState, action) {
         case 'LOGIN':
             return {
                 ...state,
-                info: action.payload.user,
+                info: {...action.payload.user,status:'online'},
                 groupInvites: action.payload.groupInvitesArray
             }
         case 'Logout':

@@ -30,6 +30,11 @@ const groupReducer = (state = initialState, action) => {
                         })
                     }
                 }
+                case'memberJoiningGroup':
+                     return{
+                        ...state,
+                        members:[...state.members,action.payload]
+                     }
                 case 'deleteMessage':
                     console.log('delete msg')
                     return {
