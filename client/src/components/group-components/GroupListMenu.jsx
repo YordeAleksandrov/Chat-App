@@ -146,7 +146,9 @@ const GroupsListMenu = () => {
       dispatch(toggleLoader(false))
     }
   }
-  const handleAcceptInvitation=(invitationId,groupId)=>{
+  const handleAcceptInvitation=(invitationId,groupId,invite)=>{
+    dispatch(removeGroupInvitation(invitationId))
+    setGroups([...groups,{id:invite.group_id,name:invite.name,image_url:invite.image_url}])
     userSocket.send(JSON.stringify({
       type:'acceptInvite',
       groupId:groupId,
@@ -157,6 +159,7 @@ const GroupsListMenu = () => {
        id:user.user_id,
        image_url:user.image_url
       }
+      
   }));
   nav(`/groups/${groupId}`)
   }
@@ -174,7 +177,6 @@ const GroupsListMenu = () => {
         invitationId
       })
     })
-  
   }
   return (
     <div className={classes.groupSection}>
@@ -194,7 +196,7 @@ const GroupsListMenu = () => {
             <div>
               <IconButton onClick={(e)=>{
                  e.stopPropagation()
-                 handleAcceptInvitation(invite.invitation_id,invite.group_id)
+                 handleAcceptInvitation(invite.invitation_id,invite.group_id,invite)
               }}>
             <CheckIcon/>
               </IconButton>

@@ -30,6 +30,13 @@ const groupReducer = (state = initialState, action) => {
                         })
                     }
                 }
+                case'systemMessage':{
+                    
+                    return {
+                        ...state,
+                        messages: [...state.messages, action.payload.message]
+                    };
+                }
                 case'memberJoiningGroup':
                      return{
                         ...state,

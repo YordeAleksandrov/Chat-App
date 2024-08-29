@@ -181,14 +181,15 @@ exports.uploadMessageFiles = (req, res) => {
     res.status(201).json(files)
 
 }
-exports.handleSendMessage = (req, res) => {
+exports.handleSendMessage = async(req, res) => {
     const { sender_image_url, sender_username, sender_id, group_id, content, files, type } = req.body;
     const filesToString = JSON.stringify(files)
 
     try {
-        const result = db.query(
+        const result =await db.query(
             `INSERT INTO group_messages (sender_id, group_id, content, files) 
-             VALUES ($1, $2, $3, $4)`,
+            VALUES ($1, $2, $3, $4)
+            RETURNING id`,
             [sender_id, group_id, content, filesToString]
         );
         sendMessageToGroupMembers(group_id, {
@@ -199,6 +200,7 @@ exports.handleSendMessage = (req, res) => {
             content,
             files,
             type,
+            id:result.rows[0].id,
             created_at: new Date()
         })
         res.sendStatus(201);

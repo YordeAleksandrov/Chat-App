@@ -96,6 +96,7 @@ const Message = ({ msg, lastMessage }) => {
       handleRemoveReaction(emoji)
       return
     }
+
     groupSocket.send(JSON.stringify({
       type: 'addReaction',
       messageId: msg.id,
@@ -134,6 +135,13 @@ const showMsgHeader=()=>{
 
   return false
 }
+if(msg.type==='system'){
+  return(
+    <Divider className={classes.msgDivider}>{msg.content}</Divider>
+  )
+}else{
+
+
   return (
     <>
       {lastMsgDate !== currentMsgDate && <Divider className={classes.msgDivider}>{dateDivider(currentMsgDate)}</Divider>}
@@ -243,5 +251,6 @@ const showMsgHeader=()=>{
       </Card>
     </>
   )
+}
 }
 export default Message

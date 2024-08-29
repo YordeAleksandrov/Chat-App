@@ -36,7 +36,6 @@ exports.addReaction = async (messageId,userId,username,emoji) => {
         const updatedReactions = JSON.stringify(reactions);
         console.log(updatedReactions)
         if(rows.length>0){
-            console.log(rows[0].reaction)
         await db.query('UPDATE group_reactions SET reaction=$1 WHERE message_id=$2',
             [updatedReactions,messageId]
         )
@@ -57,6 +56,8 @@ exports.addReaction = async (messageId,userId,username,emoji) => {
    
 }
 exports.removeReaction=async(messageId,userId,username,emoji)=>{
+    if(!messageId)return false
+    console.log('Message Id is ' +messageId)
     try {
     const selectQuery = `SELECT reaction FROM group_reactions WHERE message_id = $1`;
     db.query(selectQuery, [messageId], (err, result) => {
@@ -68,7 +69,7 @@ exports.removeReaction=async(messageId,userId,username,emoji)=>{
         if (result.length === 0) {
             console.log('No reactions found for the given message ID');
             return false;
-        }
+        } 
         let reactions = result.rows[0].reaction;   
         reactions[emoji]=reactions[emoji].filter(reaction => reaction.userId !== userId)
 
@@ -120,14 +121,15 @@ try {
    console.log(err)
 }
 };
-exports.acceptGroupInvite=async(invitationId,groupId,memberId)=>{
+exports.acceptGroupInvite=async(invitationId,groupId,memberId,username)=>{
     console.log(invitationId, groupId,memberId)
     const invitationQuery = 'DELETE FROM group_invites WHERE id = $1';
     const addMemberQuery = 'INSERT INTO group_members (group_id, user_id) VALUES ($1, $2)';
-
+    const addSystemMessageQuery=`INSERT INTO group_messages (sender_id,group_id,content,type) VALUES ($1, $2, $3, $4)`
     try {
       await db.query(invitationQuery, [invitationId])
       await db.query(addMemberQuery,[groupId,memberId]);
+      await db.query(addSystemMessageQuery,[memberId,groupId,`${username} has joined the room`,'system'])
       return true
     } catch (err) {
       console.error('Error executing query', err.stack);
