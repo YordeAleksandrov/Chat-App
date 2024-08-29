@@ -120,3 +120,18 @@ try {
    console.log(err)
 }
 };
+exports.acceptGroupInvite=async(invitationId,groupId,memberId)=>{
+    console.log(invitationId, groupId,memberId)
+    const invitationQuery = 'DELETE FROM group_invites WHERE id = $1';
+    const addMemberQuery = 'INSERT INTO group_members (group_id, user_id) VALUES ($1, $2)';
+
+    try {
+      await db.query(invitationQuery, [invitationId])
+      await db.query(addMemberQuery,[groupId,memberId]);
+      return true
+    } catch (err) {
+      console.error('Error executing query', err.stack);
+      return false
+    }
+
+}

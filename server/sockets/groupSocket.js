@@ -1,5 +1,11 @@
 const WebSocket = require('ws');
-const { deleteMessage, editMessage,addReaction,removeReaction,createGroupInvite } = require('../database/db_group_helpers');
+const {
+    deleteMessage, 
+    editMessage,
+    addReaction,
+    removeReaction,
+    acceptGroupInvite,
+    createGroupInvite } = require('../database/db_group_helpers');
 
 const groupClients = new Map();
 
@@ -42,7 +48,8 @@ const startGroupSocketServer = () => {
                         }
                     });
                 }
-                    break;
+                break
+               
                 case 'deleteMessage': {
                     const { groupId, id } = JSON.parse(messageString)
                     check = deleteMessage(id)
@@ -140,9 +147,18 @@ const updateMembersStatus = (memberId,status, groupIdArray) => {
         }
     });
 };
+const addMemberToGroup=(member,groupId)=>{
+    groupClients.forEach((clientInfo,clientWs)=>{
+        if (clientInfo.groupId === groupId && clientWs.readyState === WebSocket.OPEN) {
+            clientWs.send(JSON.stringify({...member,type:'memberJoiningGroup'}));
+        }
+
+    })
+}
 
 module.exports = {
     startGroupSocketServer,
     sendMessageToGroupMembers,
-    updateMembersStatus
+    updateMembersStatus,
+    addMemberToGroup
 }; 

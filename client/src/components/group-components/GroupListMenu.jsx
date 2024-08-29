@@ -17,7 +17,7 @@ import { handleImageChange } from "../../helpers/uploadImage"
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
 import IconButton from '@mui/material/IconButton';
-import {groupSocket}from "../../reducer/middlewares/socketMiddleware"
+import {groupSocket, userSocket}from "../../reducer/middlewares/socketMiddleware"
 
 
 
@@ -146,13 +146,19 @@ const GroupsListMenu = () => {
       dispatch(toggleLoader(false))
     }
   }
-  const handleAcceptInvitation=(invitationId)=>{
-  //   groupSocket.send(JSON.stringify({
-  //     type:'Typing',
-  //     groupId:id,
-  //     userId:user.id,
-  //     name:user.name
-  // }));
+  const handleAcceptInvitation=(invitationId,groupId)=>{
+    userSocket.send(JSON.stringify({
+      type:'acceptInvite',
+      groupId:groupId,
+      invitationId,
+      member:{
+       username:user.username,
+       status:user.status,
+       id:user.user_id,
+       image_url:user.image_url
+      }
+  }));
+  nav(`/groups/${groupId}`)
   }
   const handleDeclineInvitation=(invitationId)=>{
     console.log(invitationId)
@@ -176,6 +182,7 @@ const GroupsListMenu = () => {
       {groupInvites.length>0 && <div className={classes.invitationListContainer}>
         {groupInvites.map((invite) => {
           return <div 
+          key={invite.invitation_id}
           onClick={() => nav(`/groupInfo/${invite.group_id}`)}
           className={classes.groupField}>
             
@@ -187,13 +194,13 @@ const GroupsListMenu = () => {
             <div>
               <IconButton onClick={(e)=>{
                  e.stopPropagation()
-                 handleAcceptInvitation(invite.invitation_id)
+                 handleAcceptInvitation(invite.invitation_id,invite.group_id)
               }}>
             <CheckIcon/>
               </IconButton>
               <IconButton onClick={(e)=>{
                  e.stopPropagation()
-                 handleDeclineInvitation(invite.invitation_id)
+                 handleDeclineInvitation(invite.invitation_id,invite.group_id)
               }}>
             <CloseIcon />
               </IconButton>
