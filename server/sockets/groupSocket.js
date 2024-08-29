@@ -151,6 +151,16 @@ const addMemberToGroup=(member,groupId)=>{
     groupClients.forEach((clientInfo,clientWs)=>{
         if (clientInfo.groupId === groupId && clientWs.readyState === WebSocket.OPEN) {
             clientWs.send(JSON.stringify({...member,type:'memberJoiningGroup'}));
+            clientWs.send(JSON.stringify({
+                message: {
+                    sender_id:member.id,
+                    group_id:groupId,
+                    content:`${member.username} has joined the room`,
+                    type:'system'
+                },
+                type: 'systemMessage'
+            }));
+            
         }
 
     })

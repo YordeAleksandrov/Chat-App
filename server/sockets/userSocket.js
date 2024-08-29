@@ -39,9 +39,9 @@ const StartUserSocketServer = () => {
                     })()
                     break;
                 }
-                case 'acceptInvite': {
+                case 'acceptInvite': { 
                     const { groupId, member, invitationId } = JSON.parse(messageString)
-                   const check= acceptGroupInvite(invitationId, groupId, member.id)
+                   const check= acceptGroupInvite(invitationId, groupId, member.id,member.username)
                    if(check){
                     addMemberToGroup(member,groupId)
                    }

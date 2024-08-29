@@ -85,11 +85,14 @@ const GroupMembers = () => {
     const nav = useNavigate()
     const [searchedUsers, setSearchedUsers] = useState([])
     const [searchValue, setSearchValue] = useState('')
-    const[invitedUsersId,setInvitedUsersId]=useState([])
+    const [invitedUsersId, setInvitedUsersId] = useState([])
 
     //options for members
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+
+    const [menuAnchorEl, setMenuAnchorEl] = useState(null);
+    const [openMenuId, setOpenMenuId] = useState(null);
 
     //modal
     const [openModal, setOpenModal] = useState(false);
@@ -101,14 +104,14 @@ const GroupMembers = () => {
         setOpenModal(false);
     }
 
-
-    const optionsHandleClick = (event) => {
-        setAnchorEl(event.currentTarget);
+    const optionsHandleClick = (event, memberId) => {
+        setMenuAnchorEl(event.currentTarget);
+        setOpenMenuId(memberId);
     };
     const optionsHandleClose = () => {
-        setAnchorEl(null);
+        setMenuAnchorEl(null);
+        setOpenMenuId(null);
     };
-
     const checkStatusColor = (status) => {
         switch (status) {
             case 'online':
@@ -137,6 +140,14 @@ const GroupMembers = () => {
             searchForUsers()
         }
     }
+    const checkMemberLeaveButton = (memberId) => {
+        if (memberId === user.id) {
+            console.log(true)
+            return true
+        }
+        console.log(false)
+        return false
+    }
     const searchForUsers = async () => {
         if (!searchValue) return;
         const accessToken = sessionStorage.getItem('accessToken')
@@ -148,14 +159,14 @@ const GroupMembers = () => {
             },
             body: JSON.stringify({
                 searchTerm: searchValue,
-                groupId:id
+                groupId: id
             })
         });
         if (!response.ok) {
             console.log('failed to fetch')
             return
         }
-        const {data,invitedList} = await response.json()
+        const { data, invitedList } = await response.json()
         setInvitedUsersId(invitedList)
         const filteredData = data.filter(data => data.user_id !== user.id)
         setSearchedUsers(filteredData)
@@ -167,19 +178,19 @@ const GroupMembers = () => {
                 check = true
             }
         })
-        invitedUsersId.length>0&&invitedUsersId.forEach(id=>{
-            if(id===userId){
-                check=true
+        invitedUsersId.length > 0 && invitedUsersId.forEach(id => {
+            if (id === userId) {
+                check = true
             }
         })
         return check
 
     }
-    const inviteButtonText=(userId)=>{
-        let text='Invite'
-        invitedUsersId.length>0&&invitedUsersId.forEach(id=>{
-            if(id===userId){
-                text='Invited'
+    const inviteButtonText = (userId) => {
+        let text = 'Invite'
+        invitedUsersId.length > 0 && invitedUsersId.forEach(id => {
+            if (id === userId) {
+                text = 'Invited'
             }
         })
         return text
@@ -192,7 +203,7 @@ const GroupMembers = () => {
             userId: userId,
             groupId: id
         }));
-        setInvitedUsersId([...invitedUsersId,userId])
+        setInvitedUsersId([...invitedUsersId, userId])
     }
     return (
         <div className={classes.container}>
@@ -209,7 +220,10 @@ const GroupMembers = () => {
                 {/**end of header */}
                 {members && <div>
                     {members.map((member) => {
+
+                        const isOwner = ownerCheck(user.id);
                         const memberStatusColor = checkStatusColor(member.status)
+                        const isMenuOpen = openMenuId === member.id;
                         return <div key={member.id}
                             className={classes.memberField}>
 
@@ -226,37 +240,55 @@ const GroupMembers = () => {
 
 
                             <span className={classes.personName}>{member.username}{ownerCheck(member.id)}</span>
-                            {user.id!==member.id&&<IconButton
+                            {<IconButton
                                 className={classes.optionsButton}
                                 aria-label="more"
                                 id="long-button"
                                 aria-controls={open ? 'long-menu' : undefined}
                                 aria-expanded={open ? 'true' : undefined}
                                 aria-haspopup="true"
-
-                                onClick={optionsHandleClick}
+                                onClick={(event) => optionsHandleClick(event, member.id)}
                             >
                                 <MoreVertIcon />
                             </IconButton>}
-                            <Menu
-                                className={classes.optionMenu}
-                                key={member.id}
-                                id="fade-menu"
-                                MenuListProps={{
-                                    'aria-labelledby': 'fade-button',
-                                }}
-                                anchorEl={anchorEl}
-                                open={open}
-                                onClose={optionsHandleClose}
-                                TransitionComponent={Fade}
-                            >
-                                <MenuItem onClick={optionsHandleClose} className={classes.option} >Profile</MenuItem>
-                                <MenuItem onClick={optionsHandleClose} className={classes.option} >Send Message</MenuItem>
-                                <MenuItem onClick={optionsHandleClose} className={classes.option} >Add Friend</MenuItem>
-                                {ownerCheck(user.id) && <MenuItem className={classes.option} onClick={optionsHandleClose}>Make Owner</MenuItem>}
-                                {ownerCheck(user.id) && <MenuItem sx={{ color: 'red' }} onClick={optionsHandleClose}>Kick</MenuItem>}
 
-                            </Menu>
+                            <Menu
+                        className={classes.optionMenu}
+                        key={member.id}
+                        id="fade-menu"
+                        MenuListProps={{
+                            'aria-labelledby': 'fade-button',
+                        }}
+                        anchorEl={menuAnchorEl}
+                        open={isMenuOpen}
+                        onClose={optionsHandleClose}
+                        TransitionComponent={Fade}
+                    >
+                        <MenuItem onClick={optionsHandleClose} className={classes.option}>
+                            Profile
+                        </MenuItem>
+                        <MenuItem onClick={optionsHandleClose} className={classes.option}>
+                            Send Message
+                        </MenuItem>
+                        <MenuItem onClick={optionsHandleClose} className={classes.option}>
+                            Add Friend
+                        </MenuItem>
+                        {checkMemberLeaveButton(member.id) && (
+                            <MenuItem onClick={optionsHandleClose} className={classes.option}>
+                                Leave
+                            </MenuItem>
+                        )}
+                        {isOwner && !checkMemberLeaveButton(member.id)&& (
+                            <>
+                                <MenuItem className={classes.option} onClick={optionsHandleClose}>
+                                    Make Owner
+                                </MenuItem>
+                                <MenuItem sx={{ color: 'red' }} onClick={optionsHandleClose}>
+                                    Kick
+                                </MenuItem>
+                            </>
+                        )}
+                    </Menu>
                         </div>
                     })}
                 </div>}
@@ -272,7 +304,7 @@ const GroupMembers = () => {
                         <Box sx={style} className={classes.modal}>
                             <Search>
                                 <SearchIconWrapper>
-                                        <SearchIcon/>
+                                    <SearchIcon />
                                 </SearchIconWrapper>
                                 <StyledInputBase
                                     onKeyDown={handleKeyDown}
@@ -284,8 +316,8 @@ const GroupMembers = () => {
 
                             </Search>
                             <Button
-                            onClick={searchForUsers} 
-                            sx={{marginTop:'5px',marginBottom:'15px',backgroundColor:'purple'}} variant="contained">Search</Button>
+                                onClick={searchForUsers}
+                                sx={{ marginTop: '5px', marginBottom: '15px', backgroundColor: 'purple' }} variant="contained">Search</Button>
                             <div className={classes.searchedContainer}>
                                 {searchedUsers.map((user, index) => {
                                     const memberStatusColor = checkStatusColor(user.status)
