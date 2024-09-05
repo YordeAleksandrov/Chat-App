@@ -4,7 +4,7 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import GroupAddSharpIcon from '@mui/icons-material/GroupAddSharp';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Avatar } from '@mui/material';
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
@@ -17,6 +17,8 @@ import Tooltip from '@mui/material/Tooltip';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import { disconnectUserSocket, USER_SOCKET_DISCONNECT } from '../reducer/actions/USER_ACTIONS';
+import { disconnectGroupSocket, GROUP_SOCKET_DISCONNECT } from '../reducer/actions/GROUP_ACTIONS';
 
 
 
@@ -27,6 +29,7 @@ const Header = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const user=useSelector(data=>data.user.info)
+    const dispatch=useDispatch()
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
@@ -41,6 +44,15 @@ const Header = () => {
 
     const isActive = (page) => {
         return location.pathname.split('/')[1] === page ? true : false
+    }
+    const handleLogout=()=>{
+        handleClose()
+        sessionStorage.removeItem('accessToken')
+        sessionStorage.removeItem('userId')
+        dispatch(disconnectUserSocket())
+        dispatch(disconnectGroupSocket())
+        
+        navigate('/login')
     }
 
     return (
@@ -116,7 +128,7 @@ const Header = () => {
                         </ListItemIcon>
                         Settings
                     </MenuItem>
-                    <MenuItem onClick={handleClose}>
+                    <MenuItem onClick={handleLogout}>
                         <ListItemIcon>
                             <Logout fontSize="small" />
                         </ListItemIcon>

@@ -14,8 +14,14 @@ export function userReducer(state = initialState, action) {
                 info: {...action.payload.user,status:'online'},
                 groupInvites: action.payload.groupInvitesArray
             }
-        case 'Logout':
-            return initialState
+        case 'LOGOUT':
+            return  state= {
+                info: {},
+                friends: [],
+                groupInvites: [],
+                chats: [],
+                notifications: []
+            }
         case DELETE_GROUP_INVITATION:
             return{
                 ...state,

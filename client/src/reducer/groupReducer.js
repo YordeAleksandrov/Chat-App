@@ -123,7 +123,12 @@ const groupReducer = (state = initialState, action) => {
 
 
         case GROUP_SOCKET_DISCONNECT:
-            return { ...state, group: null }
+            return state= {
+                info: {},
+                members: [],
+                messages: [],
+                typing: []
+            };
         default:
             return state;
     }
