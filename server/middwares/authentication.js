@@ -13,7 +13,6 @@ const authenticateToken = (req, res, next) => {
       console.log('Token expired')
       return res.sendStatus(403);
     }
-    console.log(`accessToken is valid `)
     req.user = user;
     next();
   });
