@@ -44,6 +44,8 @@ const socketMiddleware = store => next => action => {
                 groupSocket=''
             }
             break;
+
+            
             //USER SOCKET
             case USER_SOCKET_CONNECT:
                 console.log('entering socket user middleware')
@@ -57,7 +59,6 @@ const socketMiddleware = store => next => action => {
                 userSocket = new WebSocket(`ws://localhost:5000/?userId=${userId}`);
                 userSocket.onopen = () => {
                     console.log('User WebSocket connected');
-                    // store.dispatch(loadInitialGroup(groupId, userId))
                     
                 };
                 userSocket.onmessage = (event) => {

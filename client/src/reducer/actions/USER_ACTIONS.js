@@ -40,7 +40,6 @@ export const loginUserAction = (userId) => {
 
         } catch (error) {
             console.error('Fetch error:', error);
-            // Optionally, dispatch an error action
         }
     };
 };
