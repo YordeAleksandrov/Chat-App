@@ -63,6 +63,7 @@ const startGroupSocketServer = () => {
                         }
                     });
                 }
+                break;
                 case 'addReaction': {
                     const { messageId, groupId, userId, username, emoji } = JSON.parse(messageString)
                      const check = addReaction(messageId, userId, username, emoji)

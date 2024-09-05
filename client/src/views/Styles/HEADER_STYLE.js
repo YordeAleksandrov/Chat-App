@@ -14,7 +14,18 @@ export const useStyles = makeStyles(theme => ({
       width: '90%',
       height: '50%', 
 
-    },
+    }, 
+  }, 
+  avatarOptions:{
+  display:'flex',
+  flexDirection:'column',
+  position:'absolute',
+  marginTop:'6px',
+  [theme.breakpoints.down('sm')]: {
+    top: 0,
+    marginTop:'0px',
+    padding:'6px',
+  }
   },
   div: { 
     display:'flex',

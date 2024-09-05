@@ -142,10 +142,8 @@ const GroupMembers = () => {
     }
     const checkMemberLeaveButton = (memberId) => {
         if (memberId === user.id) {
-            console.log(true)
             return true
         }
-        console.log(false)
         return false
     }
     const searchForUsers = async () => {
@@ -196,7 +194,6 @@ const GroupMembers = () => {
         return text
 
     }
-    //TODO
     const sendInvite = (userId) => {
         userSocket.send(JSON.stringify({
             type: 'groupInvite',
@@ -253,42 +250,42 @@ const GroupMembers = () => {
                             </IconButton>}
 
                             <Menu
-                        className={classes.optionMenu}
-                        key={member.id}
-                        id="fade-menu"
-                        MenuListProps={{
-                            'aria-labelledby': 'fade-button',
-                        }}
-                        anchorEl={menuAnchorEl}
-                        open={isMenuOpen}
-                        onClose={optionsHandleClose}
-                        TransitionComponent={Fade}
-                    >
-                        <MenuItem onClick={optionsHandleClose} className={classes.option}>
-                            Profile
-                        </MenuItem>
-                        <MenuItem onClick={optionsHandleClose} className={classes.option}>
-                            Send Message
-                        </MenuItem>
-                        <MenuItem onClick={optionsHandleClose} className={classes.option}>
-                            Add Friend
-                        </MenuItem>
-                        {checkMemberLeaveButton(member.id) && (
-                            <MenuItem onClick={optionsHandleClose} className={classes.option}>
-                                Leave
-                            </MenuItem>
-                        )}
-                        {isOwner && !checkMemberLeaveButton(member.id)&& (
-                            <>
-                                <MenuItem className={classes.option} onClick={optionsHandleClose}>
-                                    Make Owner
+                                className={classes.optionMenu}
+                                key={member.id}
+                                id="fade-menu"
+                                MenuListProps={{
+                                    'aria-labelledby': 'fade-button',
+                                }}
+                                anchorEl={menuAnchorEl}
+                                open={isMenuOpen}
+                                onClose={optionsHandleClose}
+                                TransitionComponent={Fade}
+                            >
+                                <MenuItem onClick={optionsHandleClose} className={classes.option}>
+                                    Profile
                                 </MenuItem>
-                                <MenuItem sx={{ color: 'red' }} onClick={optionsHandleClose}>
-                                    Kick
+                                <MenuItem onClick={optionsHandleClose} className={classes.option}>
+                                    Send Message
                                 </MenuItem>
-                            </>
-                        )}
-                    </Menu>
+                                <MenuItem onClick={optionsHandleClose} className={classes.option}>
+                                    Add Friend
+                                </MenuItem>
+                                {checkMemberLeaveButton(member.id) && (
+                                    <MenuItem onClick={optionsHandleClose} className={classes.option}>
+                                        Leave
+                                    </MenuItem>
+                                )}
+                                {isOwner && !checkMemberLeaveButton(member.id) &&
+                                    <MenuItem className={classes.option} onClick={optionsHandleClose}>
+                                        Make Owner
+                                    </MenuItem>
+                                }
+                                {isOwner && !checkMemberLeaveButton(member.id) &&
+                                    <MenuItem sx={{ color: 'red' }} onClick={optionsHandleClose}>
+                                        Kick
+                                    </MenuItem>
+                                }
+                            </Menu>
                         </div>
                     })}
                 </div>}
