@@ -3,8 +3,18 @@ const {db}=require('./db')
 
 exports.deleteMessage = async (id) => {
     try {
+        console.log('Deleting message with ID:', id);
         const deleteQuery = 'DELETE FROM group_messages WHERE id = $1';
-        await db.query(deleteQuery, [id]);
+        const deleteEmojiQuery = 'DELETE FROM group_reactions WHERE message_id = $1';
+
+        // Log the number of reactions deleted
+        const deleteEmojiResult = await db.query(deleteEmojiQuery, [id]);
+        console.log('Number of reactions deleted:', deleteEmojiResult.rowCount);
+
+        // Log the number of messages deleted
+        const deleteMessageResult = await db.query(deleteQuery, [id]);
+        console.log('Number of messages deleted:', deleteMessageResult.rowCount);
+
         return true;
     } catch (err) {
         console.error('Error deleting message:', err);
@@ -17,15 +27,15 @@ exports.editMessage=async(id,content)=>{
         await db.query(updateQuery, [content, id]);
         return true
     } catch (err) {
-      return false
-    }
+      return false 
+    }  
 }
 exports.addReaction = async (messageId,userId,username,emoji) => {
     try {
         const selectQuery = 'SELECT * FROM group_reactions WHERE message_id = $1';
         const { rows } = await db.query(selectQuery, [messageId]);
         let reactions = rows.length > 0 ? (rows[0].reaction) : {};
-        if (!reactions[emoji]) {
+        if (!reactions[emoji]) { 
             reactions[emoji] = [];
         }
         reactions[emoji].push({userId,username})
@@ -82,7 +92,7 @@ exports.removeReaction=async(messageId,userId,username,emoji)=>{
             }
         });
     });
-
+ 
     } catch (error) {
         console.log(error)
         return false
