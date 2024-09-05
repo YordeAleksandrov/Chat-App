@@ -74,6 +74,7 @@ const socketMiddleware = store => next => action => {
                 if (userSocket) {
                     userSocket.close();
                     userSocket=''
+                    store.dispatch({ type:'LOGOUT', payload:null });
                 }
                 break;
          

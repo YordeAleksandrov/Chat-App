@@ -35,9 +35,9 @@ function App() {
     }else if(!userId &&!user?.id){
       navigate('/login')
     } 
-    setTimeout(()=>{
+   
       dispatch(toggleLoader(false))
-    },1300)
+
   },[])
   useEffect(()=>{
    
