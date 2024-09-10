@@ -16,6 +16,8 @@ import { ThemeProvider, createTheme, useMediaQuery } from '@mui/material';
 import GroupChat from './components/group-components/GroupChat';
 import PublicGroups from './views/PublicGroups';
 import GroupMembers from './components/group-components/GroupMembers';
+import './i18n/i18n'
+
 const theme = createTheme();
 
 function App() {

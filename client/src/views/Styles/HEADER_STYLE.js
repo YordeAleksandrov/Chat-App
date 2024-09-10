@@ -31,7 +31,7 @@ export const useStyles = makeStyles(theme => ({
     display:'flex',
     height: '100vh',
     flexDirection:'column',
-    justifyContent:'space-around',
+    justifyContent:'space-between',
     width: '7%',
     gap:'20px',
     alignItems:'center',

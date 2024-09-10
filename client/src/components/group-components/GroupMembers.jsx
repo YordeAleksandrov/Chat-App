@@ -18,6 +18,7 @@ import { alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import { userSocket } from '../../reducer/middlewares/socketMiddleware';
+import { useTranslation } from "react-i18next";
 const SmallAvatar = styled(Avatar)(({ theme }) => ({
     width: 15,
     height: 15,
@@ -87,6 +88,8 @@ const GroupMembers = () => {
     const [searchValue, setSearchValue] = useState('')
     const [invitedUsersId, setInvitedUsersId] = useState([])
 
+    const { t, i18n } = useTranslation()
+
     //options for members
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -127,7 +130,7 @@ const GroupMembers = () => {
 
     const ownerCheck = (memberId) => {
         if (memberId === group.owner_id) {
-            return '(owner)'
+            return '👑'
         }
     }
     const handleSearchInput = (value) => {
@@ -202,6 +205,10 @@ const GroupMembers = () => {
         }));
         setInvitedUsersId([...invitedUsersId, userId])
     }
+    //skip the group=>options property
+    const optionsText = (property) => t(`groups.membersOPtions.${property}`);
+    //skip the group property
+    const text = (property) => t(`groups.${property}`);
     return (
         <div className={classes.container}>
             <div className={classes.membersContainer}>
@@ -211,7 +218,7 @@ const GroupMembers = () => {
 
                         onClick={() => nav(`/groups/${id}`)} className={classes.headerBackArrow} />
 
-                    <span className={classes.headerTitle}>Members</span>
+                    <span className={classes.headerTitle}>{text("Members")}</span>
                 </div>
 
                 {/**end of header */}
@@ -262,27 +269,27 @@ const GroupMembers = () => {
                                 TransitionComponent={Fade}
                             >
                                 <MenuItem onClick={optionsHandleClose} className={classes.option}>
-                                    Profile
+                                    {optionsText("Profile")}
                                 </MenuItem>
                                 <MenuItem onClick={optionsHandleClose} className={classes.option}>
-                                    Send Message
+                                    {optionsText("Send Message")}
                                 </MenuItem>
                                 <MenuItem onClick={optionsHandleClose} className={classes.option}>
-                                    Add Friend
+                                    {optionsText("Add Friend")}
                                 </MenuItem>
                                 {checkMemberLeaveButton(member.id) && (
                                     <MenuItem onClick={optionsHandleClose} className={classes.option}>
-                                        Leave
+                                        {optionsText("Leave")}
                                     </MenuItem>
                                 )}
                                 {isOwner && !checkMemberLeaveButton(member.id) &&
                                     <MenuItem className={classes.option} onClick={optionsHandleClose}>
-                                        Make Owner
+                                        {optionsText("Make Owner")}
                                     </MenuItem>
                                 }
                                 {isOwner && !checkMemberLeaveButton(member.id) &&
                                     <MenuItem sx={{ color: 'red' }} onClick={optionsHandleClose}>
-                                        Kick
+                                       {optionsText("Kick")}
                                     </MenuItem>
                                 }
                             </Menu>
@@ -305,7 +312,7 @@ const GroupMembers = () => {
                                 </SearchIconWrapper>
                                 <StyledInputBase
                                     onKeyDown={handleKeyDown}
-                                    placeholder="Search by name…"
+                                    placeholder={text("Search by name…")}
                                     inputProps={{ 'aria-label': 'search' }}
                                     onChange={(e) => handleSearchInput(e.target.value)}
                                     value={searchValue}
@@ -314,7 +321,7 @@ const GroupMembers = () => {
                             </Search>
                             <Button
                                 onClick={searchForUsers}
-                                sx={{ marginTop: '5px', marginBottom: '15px', backgroundColor: 'purple' }} variant="contained">Search</Button>
+                                sx={{ marginTop: '5px', marginBottom: '15px', backgroundColor: 'purple' }} variant="contained">{text("Search")}</Button>
                             <div className={classes.searchedContainer}>
                                 {searchedUsers.map((user, index) => {
                                     const memberStatusColor = checkStatusColor(user.status)
@@ -337,7 +344,7 @@ const GroupMembers = () => {
                                         <Button
                                             disabled={disableButtonCheck(user.user_id)}
                                             onClick={() => sendInvite(user.user_id)}
-                                            variant="outlined">{inviteButtonText(user.user_id)}</Button>
+                                            variant="outlined">{text(inviteButtonText(user.user_id))}</Button>
 
 
                                     </div>)
@@ -347,7 +354,7 @@ const GroupMembers = () => {
                     </Modal>
                 </div>
             </div>
-            <Button onClick={modalHandleOpen} className={classes.addButton}>Add</Button>
+            <Button onClick={modalHandleOpen} className={classes.addButton}>{text("Add")}</Button>
         </div>
 
     )

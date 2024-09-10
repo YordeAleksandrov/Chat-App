@@ -49,7 +49,7 @@ export const useStyles = makeStyles(theme => ({
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: '25vw',
-        height: '70vh',
+        height: '90vh',
         backgroundColor: 'rgba(220, 220, 220, 0.9)',
         border: '2px solid #000',
         borderRadius:'20px',
@@ -59,7 +59,7 @@ export const useStyles = makeStyles(theme => ({
         flexDirection:'column',
         alignItems: 'center',
         textAlign: 'center',
-        gap:'40px',
+        gap:'30px',
         [theme.breakpoints.down('sm')]:{
     width: '100vh',
     height: '70vh'
