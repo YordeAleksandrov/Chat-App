@@ -1,0 +1,35 @@
+{
+    "header": {
+        "gb": "EN",
+        "Profile": "Profile",
+        "Settings": "Settings",
+        "Logout": "Logout"
+    },
+    "groups": {
+        "Groups": "Groups",
+        "Join": "Join",
+        "Create": "Create",
+        "Cancel": "Cancel",
+        "Members": "Members",
+        "Invite": "Invite",
+        "Invites": "Invites",
+        "Invited": "Invited",
+        "Public": "Public",
+        "Private": "Private",
+        "Search": "Search",
+        "Group Name": "Group Name",
+        "Description": "Description",
+        "name is required!": "name is required!",
+        "Search by name…":"Search by name…",
+        "name must be between 4-16 symbols": "name must be between 4-16 symbols",
+        "Add": "Add",
+             "membersOPtions": {
+                "Profile": "Profile",
+                "Make Owner":"Make Owner",
+                "Kick":"Kick",
+                "Send Message": "Send Message",
+                "Add Friend": "Add Friend",
+                "Leave": "Leave"
+        }
+    }
+}

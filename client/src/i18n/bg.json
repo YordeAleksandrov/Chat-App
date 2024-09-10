@@ -1,0 +1,36 @@
+{
+    "header": {
+        "bg": "БГ",
+        "Profile": "Профил",
+        "Settings": "Настройки",
+        "Logout": "Изход"
+    },
+    "groups": {
+        "Groups": "Групи",
+        "Join": "Влез",
+        "Create": "Създай",
+        "Cancel": "Откажи",
+        "Members": "Членове",
+        "Add": "Добави",
+        "Invite": "Покани",
+        "Invites": "Покани",
+        "Invited": "Поканен",
+        "Search": "Търси",
+        "Public": "Публична",
+        "Group Name":"Име на група",
+        "Description":"Описание",
+        "name is required!":"името е задължетелно!",
+        "name must be between 4-16 symbols":"името трябва да е между 4-16 символа",
+        "Private": "Затворена",
+        "Search by name…":"Търси по име…",
+
+        "membersOPtions": {
+            "Profile": "Профил",
+            "Make Owner":"Направи Собственик",
+            "Kick":"Махни от групата",
+            "Send Message": "Изпрати съобщение",
+            "Add Friend": "Добави приятел",
+            "Leave": "Напусни"
+        }
+    }
+}
