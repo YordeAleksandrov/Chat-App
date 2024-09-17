@@ -4,7 +4,8 @@ const initialState = {
     friends: [],
     groupInvites: [],
     chats: [],
-    notifications: []
+    notifications: [],
+    friendInvites:[]
 }
 export function userReducer(state = initialState, action) {
     switch (action.type) {

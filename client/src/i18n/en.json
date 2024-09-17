@@ -31,5 +31,12 @@
                 "Add Friend": "Add Friend",
                 "Leave": "Leave"
         }
+    },
+    "friends":{
+        "friends":"Friends",
+        "invitations":"Invitations",
+        "add":"Add",
+        "invited":"invited",
+        "searchBy":"Search by name..."
     }
 }

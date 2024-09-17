@@ -17,6 +17,7 @@ import GroupChat from './components/group-components/GroupChat';
 import PublicGroups from './views/PublicGroups';
 import GroupMembers from './components/group-components/GroupMembers';
 import './i18n/i18n'
+import Friends from './views/Friends';
 
 const theme = createTheme();
 
@@ -86,6 +87,7 @@ if(user.id){
         <Route path='/*'element={<ErrorPage/>}/>
         <Route path='/groups' element={<Groups/>}/>
         <Route path='/join-group' element={<PublicGroups/>}/>
+        <Route path='/friends' element={<Friends/>}/>
         <Route path='/groups/:id' element={isSmallScreen?(<GroupChat/>):(<Groups/>)}/>
         <Route path='/groups/:id/:page' element={isSmallScreen?(<GroupMembers/>):(<Groups/>)}/>
       </Routes>
